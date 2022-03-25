@@ -40,7 +40,7 @@ services:
     build:
       context: ./transaction-ms
     environment:
-      - GOOGLE_TOPIC_PATH=projects/driven-plexus-325011/topics/transactions
+      - GOOGLE_TOPIC_PATH=projects/ada22/topics/transactions
     ports:
       - "5002:5000"
 
@@ -59,6 +59,7 @@ services:
       - MONGO_HOST=mongodb://stock-ms-mongodb:27017/
     ports:
       - "5003:5000"
+
 
   # price-fetch-ms:
   #   build: 
