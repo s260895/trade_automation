@@ -1,0 +1,16 @@
+
+steps:
+- name: 'python'
+  entrypoint: /bin/sh
+  # Run pip install and pytest in the same build step
+  # (pip packages won't be preserved in future steps!)
+  args: [-c, 'pip install -r requirements.txt']
+  # dir: '/'
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['functions', 
+          'deploy', 
+          'price-fetch-ms', 
+          '--trigger-topic=price_fetcher', 
+          '--runtime=python39', 
+          '--entry-point=price_fetcher']
+  dir: '/'

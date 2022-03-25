@@ -59,3 +59,19 @@ services:
       - MONGO_HOST=mongodb://stock-ms-mongodb:27017/
     ports:
       - "5003:5000"
+
+  # price-fetch-ms:
+  #   build: 
+  #     context: ./price-fetch-ms
+  #   enviroment:
+  #     - GOOGLE_TOPIC_PATH=projects/ada22/topics/price_fetcher
+  #   ports:
+  #     - ""
+
+  # rule-evaluator-ms:
+  #   build: 
+  #     context: ./rule-evaluator-ms
+  #   environment:
+  #     - GOOGLE_TOPIC_PATH=projects/ada22/topics/rule_evaluator
+  #   ports:
+  #     - ""
