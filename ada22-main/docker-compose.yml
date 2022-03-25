@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+  user-ms:
+    container_name: user-ms
+    build:
+      context: ./user-ms
+    ports:
+    - "80:80"
+    depends_on:
+    - user-ms-pgdb
+
+  user-ms-pgdb:
+    container_name: user-ms-pgdb
+    image: postgres:latest
+    ports:
+    - "5432:5432"
+    environment:
+      POSTGRES_DB: "test"
+      POSTGRES_USER: "test"
+      POSTGRES_PASSWORD: "test"
+
+  userstock-ms:
+    build:
+      context: ./userstock-ms
+    depends_on:
+    - userstock-ms-mongodb
+    environment:
+      - MONGO_HOST=mongodb://userstock-ms-mongodb:27017/
+    ports:
+      - "5001:5000"
+  userstock-ms-mongodb:
+    image: mongo
+    volumes:
+    - ../mongo-userstock-volume:/data/db
+    ports:
+    - "27017:27017"
+
+  transaction-ms:
+    build:
+      context: ./transaction-ms
+    environment:
+      - GOOGLE_TOPIC_PATH=projects/driven-plexus-325011/topics/transactions
+    ports:
+      - "5002:5000"
+
+  stock-ms-mongodb:
+    image: mongo
+    volumes:
+    - ../mongo-stock-volume:/data/db
+    ports:
+    - "27018:27017"
+  stock-ms:
+    build:
+      context: ./stock-ms
+    depends_on:
+    - stock-ms-mongodb
+    environment:
+      - MONGO_HOST=mongodb://stock-ms-mongodb:27017/
+    ports:
+      - "5003:5000"

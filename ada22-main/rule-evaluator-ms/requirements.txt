@@ -1,0 +1,7 @@
+ccxt >= 1.40.23
+datetime
+pandas
+pyti
+pickle
+time
+asyncio

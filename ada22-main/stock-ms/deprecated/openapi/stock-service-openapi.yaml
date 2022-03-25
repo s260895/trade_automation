@@ -1,0 +1,141 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Stonks Swagger Service
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:5000/v1.0
+paths:
+  /deliveries/{d_id}:
+    get:
+      summary: Get record of all stocks
+      operationId: resources.stock.Stock.get
+      tags:
+        - stock record
+      parameters:
+        - name: stock_id
+          in: path
+          description: Stock Identifier
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Stocks Record
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StocksOut"
+        '404':
+          description: Stocks record not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+
+
+  /stocks/{stock_id}:
+    put:
+      summary: Update the status of a single Stock
+      operationId: resources.stock.Stock.update
+      tags:
+        - Stock records
+      parameters:
+        - name: stock_id
+          in: path
+          description: Stock identifier
+          required: true
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Stock status
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Status was updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnyMsg"
+        '404':
+          description: Place record not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    DeliveryIn:
+      required:
+        - customer_id
+        - provider_id
+        - package_id
+      properties:
+        customer_id:
+          format: string
+        provider_id:
+          format: string
+        package_id:
+          format: string
+        delivery_time:
+          format: string
+    DeliveryOut:
+      required:
+        - id
+      properties:
+        id:
+          type: number
+        customer_id:
+          format: string
+        package_id:
+          format: string
+        delivery_time:
+          format: string
+        status:
+          $ref: "#/components/schemas/Status"
+    Status:
+      properties:
+        status:
+          type: string
+        last_update:
+          type: string
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int64
+        message:
+          type: string
+    AnyMsg:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int64
+        message:
+          type: string
+
